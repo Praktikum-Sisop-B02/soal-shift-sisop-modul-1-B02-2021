@@ -1,6 +1,5 @@
 #!/bin/bash
-#crontab :
-# 0 20 1/7,2/4 * * 
+
 file_name_template="Koleksi_"
 download_url="https://loremflickr.com/320/240/kitten"
 
@@ -18,9 +17,7 @@ do
     grep 'Location: /cache/resized' "Foto.log" > "location.log"
 
     last_location_downloaded=$(cat location.log | tail -1)
-    echo $last_location_downloaded
     match_count=$(grep -cF "$last_location_downloaded" "location.log")
-    echo $match_count
     
     if [ $match_count -ne 1 ]
     then
@@ -30,7 +27,3 @@ do
     
     file_number=$(($file_number + 1))
 done
-
-rm "Foto.log"
-
-echo "done"
