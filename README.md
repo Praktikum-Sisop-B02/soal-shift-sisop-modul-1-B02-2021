@@ -271,3 +271,15 @@ do
     rm -rf "$folderName"
 done
 ```
+
+### E. Membuat crontab untuk zip setiap hari senin - jumat jam 7 pagi dan unzip setiap hari senin - jumat jam 6 sore.
+
+#### Penyelesaian
+
+```
+0 7,18 * * 1-5 /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3d.sh
+```
+
+#### Penjelasan
+
+Cron setiap jam 7.00 dan 18.00 dimana zip dan unzip sudah di handle oleh script soal3d
