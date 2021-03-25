@@ -258,7 +258,7 @@ unzip -qP "$password" "$zip_name"
 rm -rf "$zip_name"
 ```
 
-Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing*" atau "Kelinci*" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
+Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing_" atau "Kelinci_" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
 
 ```
 # masukin semu folder yang ada ke log
