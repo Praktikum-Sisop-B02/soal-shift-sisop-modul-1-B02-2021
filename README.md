@@ -121,7 +121,7 @@ done
 Crontab :
 
 ```
-0 20 1,2,6,8,10,14,15,22,26,29,30 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
+0 20 1-31/7,2-31/4 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
 ```
 
 #### Penjelasan
@@ -141,7 +141,7 @@ Selebihnya sama dengan soal A kecuali penambahan path ke folder yang telah dibua
 Untuk cron nya sendiri
 
 ```
-0 20 1,2,6,8,10,14,15,22,26,29,30 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
+0 20 1-31/7,2-31/4 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
 ```
 
 adalah menjalankan script soal3b.sh sehari sekali pada jam 8 malam untuk tanggal-tanggal tertentu setiap bulan, yaitu dari tanggal 1 tujuh hari sekali, serta dari tanggal 2 empat hari sekali.
