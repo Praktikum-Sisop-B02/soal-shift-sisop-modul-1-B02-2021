@@ -121,7 +121,7 @@ done
 Crontab :
 
 ```
-0 20 1-31/7,2-31/4 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
+0 20 1-31/7,2-31/4 * * bash /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
 ```
 
 #### Penjelasan
@@ -141,14 +141,14 @@ Selebihnya sama dengan soal A kecuali penambahan path ke folder yang telah dibua
 Untuk cron nya sendiri
 
 ```
-0 20 1-31/7,2-31/4 * * /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
+0 20 1-31/7,2-31/4 * * bash /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh
 ```
 
 adalah menjalankan script soal3b.sh sehari sekali pada jam 8 malam untuk tanggal-tanggal tertentu setiap bulan, yaitu dari tanggal 1 tujuh hari sekali, serta dari tanggal 2 empat hari sekali.
 
 #### Kendala
 
-Crontab `0 20 1/7,2/4 * * /home/fwe/Documents/SISOPS/Codes/Soal Shift Modul 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh` tidak di support
+Crontab `0 20 1/7,2/4 * * bash /home/fwe/Documents/SISOPS/Codes/Soal Shift Modul 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3b.sh` tidak di support
 
 ### C. Mendownload gambar kucing dan kelinci secara bergantian
 
@@ -258,7 +258,7 @@ unzip -qP "$password" "$zip_name"
 rm -rf "$zip_name"
 ```
 
-Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing_" atau "Kelinci_" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
+Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing*" atau "Kelinci*" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
 
 ```
 # masukin semu folder yang ada ke log
@@ -277,7 +277,7 @@ done
 #### Penyelesaian
 
 ```
-0 7,18 * * 1-5 /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3d.sh
+0 7,18 * * 1-5 bash /home/fwe/Documents/SISOPS/Codes/Soal\ Shift\ Modul\ 1/soal-shift-sisop-modul-1-B02-2021/soal3/soal3d.sh
 ```
 
 #### Penjelasan
