@@ -173,6 +173,8 @@ Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedi
 ```
 
 
+
+
 ## Soal Nomor 3
 
 ### A. Mengunduh 23 gambar, menyimpan log, melakukan pengecekan agar tidak ada gambar yang duplikat, tanpa ada penomoran yang hilang
