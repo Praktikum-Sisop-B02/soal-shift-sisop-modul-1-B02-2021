@@ -131,7 +131,8 @@ Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
 #### Penyelesaian
 ```
 echo "Username, INFO, ERROR" > user_statistic.csv
-join hasilC.txt hasilC2.txt >> user_statistic.csv
+join hasilC.txt hasilC2.txt > user_temp.csv
+cat user_temp.csv | sort -s >> user_statistic.csv
 while IFS=" " read -a line;
 do
   for i in {0,1};
