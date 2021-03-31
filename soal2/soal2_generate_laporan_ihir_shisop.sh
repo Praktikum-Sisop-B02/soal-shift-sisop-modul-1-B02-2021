@@ -13,7 +13,7 @@ BEGIN{}
 }}
 
 END { printf("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %.2f%%.\n\n", Maxid, Maxpp)}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv > hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilA.txt hasil.txt
 
 
 #2B ==================================================
@@ -30,8 +30,9 @@ END {
     printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain:\n")
     for(nama in total){
     printf ("%s\n", nama);
+    printf("\n");
 }}}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilB.txt hasil.txt
 
 #2C ==================================================
 awk -F"\t" '
@@ -63,9 +64,9 @@ END {
         minseg="Home Office"
         minorder=home
         }
-    printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n", minseg, minorder);
+    printf("Tipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n\n", minseg, minorder);
 }}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilC.txt hasil.txt
 
 #2D ==================================================
 awk -F"\t" '
@@ -95,6 +96,6 @@ END {
        minreg="Central"
        minp=d
    }
-    printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %d",minreg,minp);
+    printf("Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %f\n",minreg,minp);
 }}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilD.txt hasil.txt
