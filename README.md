@@ -85,7 +85,7 @@ Akan menghitung jumlah INFO nya berdasarkan username dan di group by dengan user
 perl -lane 'push @F, shift @F; print "@F"' hasilCtemp.txt > hasilC.txt
 ```
 digunakan untuk menukar field pertama menjadi field terakhir karena pada file hasilCtemp.txt itu masih tidak sesuai dengan formatting jawaban.
-Begotu juga dengan command
+Begitu juga dengan command
 ```
 cat temp1.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp7.txt
 cat temp7.txt | cut -d' ' -f 2- > temp8.txt
