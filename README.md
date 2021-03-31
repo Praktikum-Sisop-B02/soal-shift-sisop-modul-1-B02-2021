@@ -1,5 +1,171 @@
 # soal-shift-sisop-modul-1-B02-2021
+## Soal Nomor 1
+Ryujin baru saja diterima sebagai IT support di perusahaan Bukapedia. Dia diberikan tugas untuk membuat laporan harian untuk aplikasi internal perusahaan, ticky. Terdapat 2 laporan yang harus dia buat, yaitu laporan daftar peringkat pesan error terbanyak yang dibuat oleh ticky dan laporan penggunaan user pada aplikasi ticky.
 
+### A. Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log. Informasi yang diperlukan antara lain: jenis log (ERROR/INFO), pesan log, dan username pada setiap baris lognya. Karena Ryujin merasa kesulitan jika harus memeriksa satu per satu baris secara manual, dia menggunakan regex untuk mempermudah pekerjaannya. Bantulah Ryujin membuat regex tersebut.
+
+#### Penyelesaian
+```
+cut syslog.log | cut -d' ' -f 6- | sort -s > hasilA.txt
+```
+
+#### Penjelasan
+Di nomor A ini kita disuruh untuk mengumpulkan informasi dari file syslog.log yang dimana informasi tersebut Jenis Log (ERROR/INFO), pesan log, dan username pada setiap baris lognya. Disini penggunaan
+```
+cut syslog.log
+```
+ditujukan untuk mengambil semua data dari syslog.log. Kemudian dengan command cut
+```
+cut -d' ' -f 6-
+```
+untuk mengambil data dengan delimiter spasi(" ") dan dimulai dari field ke 6 yaitu dari kata ERROR dan INFO sampai ke field terakhir. Setelah itu kita sorting secara ascending dengan menggunakan ``` sort -s ``` dan meletakkan hasilnya ke file sementara yaitu file hasilA.txt
+
+#### Kendala
+Kendala yang saya temui di nomor 1a ini adalah bagaimana cara untuk men-store hasil dari nomor 1a dan kemudian saya membuat file temporary yang berfungsi untuk menyimpan hasil nomor 1a agar bisa dipakai untuk nomor selanjutnya
+
+### B. Kemudian, Ryujin harus menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
+
+#### Penyelesaian
+```
+cat hasilA.txt | grep ERROR > temp1.txt
+cat temp1.txt | cut -d'(' -f 1 > temp2.txt
+cat temp2.txt | cut -d' ' -f 2- >temp3.txt
+cat temp3.txt | sort -s | uniq -c > hasilB.txt
+```
+
+#### Penjelasan
+Di nomor B ini kita disuruh menampilkan semua pesan error dan jumlah kemunculan dari pesan error tersebut. Command ```cat hasilA.txt``` akan mengambil data dari file hasilA.txt kemudian digunakan command grep ``` grep ERROR``` untuk mengambil semua log yang memiliki jenis log ERROR dan di simpan di file temp1.txt
+Kemudian, 
+``` cat temp1.txt | cut -d'(' -f 1 > temp2.txt ```
+command tersebut akan membaca file temp1.txt dan mengambil data sampai sebelum tanda "(" yaitu tanda sebelum username. Karena pada file temp1.txt masih terdapat username yang tidak diinginkan pada soal, dan kemudian disimpan di file temp3.txt.
+Pada command
+```
+cat temp2.txt | cut -d' ' -f 2- > temp3.txt
+```
+merupakan command untuk menghilangkan field yang mengandung kata ERROR
+Setelah itu, pada command
+```
+cat temp3.txt | sort -s| uniq -c > hasilB.txt
+```
+melakukan pengambilan data di file temp2.txt dan men-sorting nya secara ascending kemudian command ``` uniq -c ``` melakukan penghitungan jumlah dari error yang terdapat pada file temp2.txt dan melakukan group by berdasarkan nama errornya dan men-store hasilnya ke file hasilB.txt
+
+#### Kendala
+Kendala nya pada soal ini saya kesulitan untuk membuat formatting (Nama_log) (Jumlah), kemudian saya menggunakan command ``` perl -lane 'push @F, shift @F; print "@F"' ``` untuk membuat hal tersebut
+
+### C. Ryujin juga harus dapat menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya.
+
+#### Penyelesaian
+```
+cat hasilA.txt | grep INFO > temp4.txt
+cat temp4.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp5.txt
+cat temp5.txt | cut -d' ' -f 2- > temp6.txt
+cat temp6.txt | sort -s| uniq -c > hasilCtemp.txt
+perl -lane 'push @F, shift @F; print "@F"' hasilCtemp.txt > hasilC.txt
+cat temp1.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp7.txt
+cat temp7.txt | cut -d' ' -f 2- > temp8.txt
+cat temp8.txt | sort -s| uniq -c > hasilC2temp.txt
+perl -lane 'push @F, shift @F; print "@F"' hasilC2temp.txt > hasilC2.txt
+```
+
+### Penjelasan
+Pada command ```cat hasilA.txt | grep INFO > temp4.txt``` akan mengambil data yang berkaitan dengan INFO. 
+```
+cat temp4.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp5.txt
+``` 
+hanya akan mengeprint INFO dan usernamenya saja kemudian
+```
+cat temp5.txt | cut -d' ' -f 2- > temp6.txt
+```
+akan meng-skip field dengan kata INFO sehingga cuma usernamenya saja. Dan kemudian
+```
+cat temp6.txt | sort -s| uniq -c > hasilCtemp.txt
+```
+Akan menghitung jumlah INFO nya berdasarkan username dan di group by dengan username.
+```
+perl -lane 'push @F, shift @F; print "@F"' hasilCtemp.txt > hasilC.txt
+```
+digunakan untuk membentuk formatting yang sesuai dengan soal.
+Begotu juga dengan command
+```
+cat temp1.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp7.txt
+cat temp7.txt | cut -d' ' -f 2- > temp8.txt
+cat temp8.txt | sort -s| uniq -c > hasilC2temp.txt
+perl -lane 'push @F, shift @F; print "@F"' hasilC2temp.txt > hasilC2.txt
+```
+sama dengan penjelasan diatas.
+
+#### Kendala
+Kendala yang ditemukan yaitu cara menyingkat kode diatas karena terkesan terlalu banyak temporary file nya.
+
+### D. Semua informasi yang didapatkan pada poin b dituliskan ke dalam file error_message.csv dengan header Error,Count yang kemudian diikuti oleh daftar pesan error dan jumlah kemunculannya diurutkan berdasarkan jumlah kemunculan pesan error dari yang terbanyak.
+
+#### Penyelesaian
+```
+Echo "Count, Error" > error_massage.csv
+cat hasilB.txt | sort -nr >> error_massage_temp.csv
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+```
+
+#### Penjelasan
+Pada command
+```
+Echo "Count, Error" > error_massage.csv
+```
+mencetak header yang diinginkan, tetapi sesuai dengan nomor 1B yaitu saya tidak dapat membuat sesuai format soal makanya saya membuatnya seperti ini, dan menyimpan hasilnya ke file error_massage.csv.
+Kemudian pada command
+```
+cat hasilB.txt | sort -nr >> error_massage_temp.csv
+```
+melakukan pengambilan data dari file hasilB.txt kemuadian mensorting nya berdasarkan jumlah error terbanyak dan menyimpan hasilnya pada file error_massage_temp.csv.
+Pada command
+```
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+```
+digunakan untuk membentuk formatting yang sesuai dengan soal.
+
+#### Kendala
+Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
+
+### E. Semua informasi yang didapatkan pada poin c dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending.
+
+#### Penyelesaian
+```
+echo "Username, INFO, ERROR" > user_statistic.csv
+join hasilC.txt hasilC2.txt > user_temp.csv
+cat user_temp.csv | sort -s >> user_statistic.csv
+while IFS=" " read -a line;
+do
+  for i in {0,1};
+   do
+   line[$i]+=",";
+   done
+  echo "${line[@]}"
+done < user_statistic.csv
+```
+
+#### Penjelasan
+Pada command
+```
+echo "Username, INFO, ERROR" > user_statistic.csv
+```
+adalah pembuatan header pada file user_statistic.csv.
+Dan pada command
+```
+join hasilC.txt hasilC2.txt >> user_statistic.csv
+```
+merupakan command yang menggabung 2 file yang telah di buat, yaitu file perhitungan INFO dan perhitungan ERROR dan di group by berdasarkan usernamenya.
+Kemudian untuk
+```
+while IFS=" " read -a line;
+do
+  for i in {0,1};
+   do
+   line[$i]+=",";
+   done
+  echo "${line[@]}"
+done < user_statistic.csv
+```
+merupakan command untuk menambahkan koma pada setiap field sehingga sama dengan output yang diminta.
 ## Soal Nomor 2
 Steven dan Manis mendirikan sebuah startup bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
 
