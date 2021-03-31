@@ -84,7 +84,7 @@ Akan menghitung jumlah INFO nya berdasarkan username dan di group by dengan user
 ```
 perl -lane 'push @F, shift @F; print "@F"' hasilCtemp.txt > hasilC.txt
 ```
-digunakan untuk membentuk formatting yang sesuai dengan soal.
+digunakan untuk menukar field pertama menjadi field terakhir karena pada file hasilCtemp.txt itu masih tidak sesuai dengan formatting jawaban.
 Begotu juga dengan command
 ```
 cat temp1.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp7.txt
@@ -101,9 +101,10 @@ Kendala yang ditemukan yaitu cara menyingkat kode diatas karena terkesan terlalu
 
 #### Penyelesaian
 ```
-Echo "Count, Error" > error_massage.csv
-cat hasilB.txt | sort -nr >> error_massage_temp.csv
-perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+echo "Error, count" > error_massage.csv
+cat hasilB.txt | sort -nr  >> error_massage_temp.csv
+sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp_with_comma.csv >> error_massage.csv
 ```
 
 #### Penjelasan
@@ -119,9 +120,9 @@ cat hasilB.txt | sort -nr >> error_massage_temp.csv
 melakukan pengambilan data dari file hasilB.txt kemuadian mensorting nya berdasarkan jumlah error terbanyak dan menyimpan hasilnya pada file error_massage_temp.csv.
 Pada command
 ```
-perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
 ```
-digunakan untuk membentuk formatting yang sesuai dengan soal.
+digunakan untuk menambahkan koma pada file tersebut.
 
 #### Kendala
 Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
@@ -131,16 +132,15 @@ Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
 #### Penyelesaian
 ```
 echo "Username, INFO, ERROR" > user_statistic.csv
-join hasilC.txt hasilC2.txt > user_temp.csv
-cat user_temp.csv | sort -s >> user_statistic.csv
+join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt
 while IFS=" " read -a line;
 do
-  for i in {0,1};
-   do
+ for i in {0,1};
+  do
    line[$i]+=",";
-   done
-  echo "${line[@]}"
-done < user_statistic.csv
+  done
+ echo "${line[@]}"
+done < user_temp.txt >> user_statistic.csv
 ```
 
 #### Penjelasan
@@ -151,9 +151,9 @@ echo "Username, INFO, ERROR" > user_statistic.csv
 adalah pembuatan header pada file user_statistic.csv.
 Dan pada command
 ```
-join hasilC.txt hasilC2.txt >> user_statistic.csv
+join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt
 ```
-merupakan command yang menggabung 2 file yang telah di buat, yaitu file perhitungan INFO dan perhitungan ERROR dan di group by berdasarkan usernamenya.
+merupakan comman yang digunakan untuk menggabung 2 file yang berbeda. Untuk option -a 1 dan -a 2 merupakan outer join yang mana ketika menggabungkan 2 file maka file yang tidak memiliki pasangan juga ikut di tampilkan, dan untuk angka 1 dan 2 itu sendiri menandakan bahwa pada file 1 dan file 2. Untuk -e option digunakan untuk mereplace atau mengganti data yang bernilai empty dengan sesuatu, disini diganti dengan 0. Kemudian option -o menandakan bahwasanya output yang akan dikeluarkan itu, dimulai dari 0 yaitu join fieldnya, 1.2 yaitu field ke 2 dari file 1, dan 2.2 yaitu field ke 2 dari file 2.
 Kemudian untuk
 ```
 while IFS=" " read -a line;
@@ -163,7 +163,7 @@ do
    line[$i]+=",";
    done
   echo "${line[@]}"
-done < user_statistic.csv
+done < user_temp.txt >> user_statistic.csv
 ```
 merupakan command untuk menambahkan koma pada setiap field sehingga sama dengan output yang diminta.
 ## Soal Nomor 2
