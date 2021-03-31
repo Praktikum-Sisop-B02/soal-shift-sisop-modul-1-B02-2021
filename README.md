@@ -122,10 +122,14 @@ Pada command
 ```
 sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
 ```
-digunakan untuk menambahkan koma pada file tersebut.
-
+digunakan untuk menambahkan koma pada file tersebut
+Dan untuk command
+```
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp_with_comma.csv >> error_massage.csv
+```
+mengubah field pertama menjadi field terakhir.
 #### Kendala
-Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
+Pada soal ini kendalanya yaitu membuat koma pada output file nya.
 
 ### E. Semua informasi yang didapatkan pada poin c dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending.
 
@@ -166,6 +170,10 @@ do
 done < user_temp.txt >> user_statistic.csv
 ```
 merupakan command untuk menambahkan koma pada setiap field sehingga sama dengan output yang diminta.
+
+#### Kendala
+Untuk join 2 file yang dimana ada data di file tersebut yang unpair atau tidak berpasangan sehingga tidak dapat di tampilkan pada file outputnya, sehingga perlu ditambah command ``` join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt ``` agar data yang tidak berpasangan tersebut dapat di tampilkan dan data yang tidak memiliki pasangan akan diganti dengan 0.
+
 ## Soal Nomor 2
 Steven dan Manis mendirikan sebuah startup bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
 
