@@ -29,9 +29,9 @@ END {
 {
     printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain:\n")
     for(nama in total){
-    printf ("%s\n", nama);
+    printf ("%s\n", nama);}
     printf("\n");
-}}}
+}}
 ' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilB.txt hasil.txt
 
 #2C ==================================================
