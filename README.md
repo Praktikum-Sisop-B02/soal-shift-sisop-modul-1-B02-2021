@@ -1,31 +1,41 @@
 # soal-shift-sisop-modul-1-B02-2021
+
 ## Soal Nomor 1
+
 Ryujin baru saja diterima sebagai IT support di perusahaan Bukapedia. Dia diberikan tugas untuk membuat laporan harian untuk aplikasi internal perusahaan, ticky. Terdapat 2 laporan yang harus dia buat, yaitu laporan daftar peringkat pesan error terbanyak yang dibuat oleh ticky dan laporan penggunaan user pada aplikasi ticky.
 
 ### A. Mengumpulkan informasi dari log aplikasi yang terdapat pada file syslog.log. Informasi yang diperlukan antara lain: jenis log (ERROR/INFO), pesan log, dan username pada setiap baris lognya. Karena Ryujin merasa kesulitan jika harus memeriksa satu per satu baris secara manual, dia menggunakan regex untuk mempermudah pekerjaannya. Bantulah Ryujin membuat regex tersebut.
 
 #### Penyelesaian
+
 ```
 cut syslog.log | cut -d' ' -f 6- | sort -s > hasilA.txt
 ```
 
 #### Penjelasan
+
 Di nomor A ini kita disuruh untuk mengumpulkan informasi dari file syslog.log yang dimana informasi tersebut Jenis Log (ERROR/INFO), pesan log, dan username pada setiap baris lognya. Disini penggunaan
+
 ```
 cut syslog.log
 ```
+
 ditujukan untuk mengambil semua data dari syslog.log. Kemudian dengan command cut
+
 ```
 cut -d' ' -f 6-
 ```
-untuk mengambil data dengan delimiter spasi(" ") dan dimulai dari field ke 6 yaitu dari kata ERROR dan INFO sampai ke field terakhir. Setelah itu kita sorting secara ascending dengan menggunakan ``` sort -s ``` dan meletakkan hasilnya ke file sementara yaitu file hasilA.txt
+
+untuk mengambil data dengan delimiter spasi(" ") dan dimulai dari field ke 6 yaitu dari kata ERROR dan INFO sampai ke field terakhir. Setelah itu kita sorting secara ascending dengan menggunakan `sort -s` dan meletakkan hasilnya ke file sementara yaitu file hasilA.txt
 
 #### Kendala
+
 Kendala yang saya temui di nomor 1a ini adalah bagaimana cara untuk men-store hasil dari nomor 1a dan kemudian saya membuat file temporary yang berfungsi untuk menyimpan hasil nomor 1a agar bisa dipakai untuk nomor selanjutnya
 
 ### B. Kemudian, Ryujin harus menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
 
 #### Penyelesaian
+
 ```
 cat hasilA.txt | grep ERROR > temp1.txt
 cat temp1.txt | cut -d'(' -f 1 > temp2.txt
@@ -34,27 +44,34 @@ cat temp3.txt | sort -s | uniq -c > hasilB.txt
 ```
 
 #### Penjelasan
-Di nomor B ini kita disuruh menampilkan semua pesan error dan jumlah kemunculan dari pesan error tersebut. Command ```cat hasilA.txt``` akan mengambil data dari file hasilA.txt kemudian digunakan command grep ``` grep ERROR``` untuk mengambil semua log yang memiliki jenis log ERROR dan di simpan di file temp1.txt
-Kemudian, 
-``` cat temp1.txt | cut -d'(' -f 1 > temp2.txt ```
+
+Di nomor B ini kita disuruh menampilkan semua pesan error dan jumlah kemunculan dari pesan error tersebut. Command `cat hasilA.txt` akan mengambil data dari file hasilA.txt kemudian digunakan command grep ` grep ERROR` untuk mengambil semua log yang memiliki jenis log ERROR dan di simpan di file temp1.txt
+Kemudian,
+`cat temp1.txt | cut -d'(' -f 1 > temp2.txt`
 command tersebut akan membaca file temp1.txt dan mengambil data sampai sebelum tanda "(" yaitu tanda sebelum username. Karena pada file temp1.txt masih terdapat username yang tidak diinginkan pada soal, dan kemudian disimpan di file temp3.txt.
 Pada command
+
 ```
 cat temp2.txt | cut -d' ' -f 2- > temp3.txt
 ```
+
 merupakan command untuk menghilangkan field yang mengandung kata ERROR
 Setelah itu, pada command
+
 ```
 cat temp3.txt | sort -s| uniq -c > hasilB.txt
 ```
-melakukan pengambilan data di file temp2.txt dan men-sorting nya secara ascending kemudian command ``` uniq -c ``` melakukan penghitungan jumlah dari error yang terdapat pada file temp2.txt dan melakukan group by berdasarkan nama errornya dan men-store hasilnya ke file hasilB.txt
+
+melakukan pengambilan data di file temp2.txt dan men-sorting nya secara ascending kemudian command `uniq -c` melakukan penghitungan jumlah dari error yang terdapat pada file temp2.txt dan melakukan group by berdasarkan nama errornya dan men-store hasilnya ke file hasilB.txt
 
 #### Kendala
-Kendala nya pada soal ini saya kesulitan untuk membuat formatting (Nama_log) (Jumlah), kemudian saya menggunakan command ``` perl -lane 'push @F, shift @F; print "@F"' ``` untuk membuat hal tersebut
+
+Kendala nya pada soal ini saya kesulitan untuk membuat formatting (Nama_log) (Jumlah), kemudian saya menggunakan command `perl -lane 'push @F, shift @F; print "@F"'` untuk membuat hal tersebut
 
 ### C. Ryujin juga harus dapat menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap user-nya.
 
 #### Penyelesaian
+
 ```
 cat hasilA.txt | grep INFO > temp4.txt
 cat temp4.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp5.txt
@@ -68,93 +85,128 @@ perl -lane 'push @F, shift @F; print "@F"' hasilC2temp.txt > hasilC2.txt
 ```
 
 ### Penjelasan
-Pada command ```cat hasilA.txt | grep INFO > temp4.txt``` akan mengambil data yang berkaitan dengan INFO. 
+
+Pada command `cat hasilA.txt | grep INFO > temp4.txt` akan mengambil data yang berkaitan dengan INFO.
+
 ```
 cat temp4.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp5.txt
-``` 
+```
+
 hanya akan mengeprint INFO dan usernamenya saja kemudian
+
 ```
 cat temp5.txt | cut -d' ' -f 2- > temp6.txt
 ```
+
 akan meng-skip field dengan kata INFO sehingga cuma usernamenya saja. Dan kemudian
+
 ```
 cat temp6.txt | sort -s| uniq -c > hasilCtemp.txt
 ```
+
 Akan menghitung jumlah INFO nya berdasarkan username dan di group by dengan username.
+
 ```
 perl -lane 'push @F, shift @F; print "@F"' hasilCtemp.txt > hasilC.txt
 ```
-digunakan untuk membentuk formatting yang sesuai dengan soal.
-Begotu juga dengan command
+
+digunakan untuk menukar field pertama menjadi field terakhir karena pada file hasilCtemp.txt itu masih tidak sesuai dengan formatting jawaban.
+Begitu juga dengan command
+
 ```
 cat temp1.txt | cut -d'(' -f 2 | cut -d')' -f 1 > temp7.txt
 cat temp7.txt | cut -d' ' -f 2- > temp8.txt
 cat temp8.txt | sort -s| uniq -c > hasilC2temp.txt
 perl -lane 'push @F, shift @F; print "@F"' hasilC2temp.txt > hasilC2.txt
 ```
+
 sama dengan penjelasan diatas.
 
 #### Kendala
+
 Kendala yang ditemukan yaitu cara menyingkat kode diatas karena terkesan terlalu banyak temporary file nya.
 
 ### D. Semua informasi yang didapatkan pada poin b dituliskan ke dalam file error_message.csv dengan header Error,Count yang kemudian diikuti oleh daftar pesan error dan jumlah kemunculannya diurutkan berdasarkan jumlah kemunculan pesan error dari yang terbanyak.
 
 #### Penyelesaian
+
 ```
-Echo "Count, Error" > error_massage.csv
-cat hasilB.txt | sort -nr >> error_massage_temp.csv
-perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+echo "Error, count" > error_massage.csv
+cat hasilB.txt | sort -nr  >> error_massage_temp.csv
+sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp_with_comma.csv >> error_massage.csv
 ```
 
 #### Penjelasan
+
 Pada command
+
 ```
 Echo "Count, Error" > error_massage.csv
 ```
+
 mencetak header yang diinginkan, tetapi sesuai dengan nomor 1B yaitu saya tidak dapat membuat sesuai format soal makanya saya membuatnya seperti ini, dan menyimpan hasilnya ke file error_massage.csv.
 Kemudian pada command
+
 ```
 cat hasilB.txt | sort -nr >> error_massage_temp.csv
 ```
+
 melakukan pengambilan data dari file hasilB.txt kemuadian mensorting nya berdasarkan jumlah error terbanyak dan menyimpan hasilnya pada file error_massage_temp.csv.
 Pada command
+
 ```
-perl -lane 'push @F, shift @F; print "@F"' error_massage_temp.csv >> error_massage.csv
+sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
 ```
-digunakan untuk membentuk formatting yang sesuai dengan soal.
+
+digunakan untuk menambahkan koma pada file tersebut
+Dan untuk command
+
+```
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp_with_comma.csv >> error_massage.csv
+```
+
+mengubah field pertama menjadi field terakhir.
 
 #### Kendala
-Pada soal ini kendalanya yaitu mencetak output yang sesuai permintaan soal.
+
+Pada soal ini kendalanya yaitu membuat koma pada output file nya.
 
 ### E. Semua informasi yang didapatkan pada poin c dituliskan ke dalam file user_statistic.csv dengan header Username,INFO,ERROR diurutkan berdasarkan username secara ascending.
 
 #### Penyelesaian
+
 ```
 echo "Username, INFO, ERROR" > user_statistic.csv
-join hasilC.txt hasilC2.txt > user_temp.csv
-cat user_temp.csv | sort -s >> user_statistic.csv
+join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt
 while IFS=" " read -a line;
 do
-  for i in {0,1};
-   do
+ for i in {0,1};
+  do
    line[$i]+=",";
-   done
-  echo "${line[@]}"
-done < user_statistic.csv
+  done
+ echo "${line[@]}"
+done < user_temp.txt >> user_statistic.csv
 ```
 
 #### Penjelasan
+
 Pada command
+
 ```
 echo "Username, INFO, ERROR" > user_statistic.csv
 ```
+
 adalah pembuatan header pada file user_statistic.csv.
 Dan pada command
+
 ```
-join hasilC.txt hasilC2.txt >> user_statistic.csv
+join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt
 ```
-merupakan command yang menggabung 2 file yang telah di buat, yaitu file perhitungan INFO dan perhitungan ERROR dan di group by berdasarkan usernamenya.
+
+merupakan comman yang digunakan untuk menggabung 2 file yang berbeda. Untuk option -a 1 dan -a 2 merupakan outer join yang mana ketika menggabungkan 2 file maka file yang tidak memiliki pasangan juga ikut di tampilkan, dan untuk angka 1 dan 2 itu sendiri menandakan bahwa pada file 1 dan file 2. Untuk -e option digunakan untuk mereplace atau mengganti data yang bernilai empty dengan sesuatu, disini diganti dengan 0. Kemudian option -o menandakan bahwasanya output yang akan dikeluarkan itu, dimulai dari 0 yaitu join fieldnya, 1.2 yaitu field ke 2 dari file 1, dan 2.2 yaitu field ke 2 dari file 2.
 Kemudian untuk
+
 ```
 while IFS=" " read -a line;
 do
@@ -163,10 +215,17 @@ do
    line[$i]+=",";
    done
   echo "${line[@]}"
-done < user_statistic.csv
+done < user_temp.txt >> user_statistic.csv
 ```
+
 merupakan command untuk menambahkan koma pada setiap field sehingga sama dengan output yang diminta.
+
+#### Kendala
+
+Untuk join 2 file yang dimana ada data di file tersebut yang unpair atau tidak berpasangan sehingga tidak dapat di tampilkan pada file outputnya, sehingga perlu ditambah command `join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt` agar data yang tidak berpasangan tersebut dapat di tampilkan dan data yang tidak memiliki pasangan akan diganti dengan 0.
+
 ## Soal Nomor 2
+
 Steven dan Manis mendirikan sebuah startup bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
 
 Tiap tahunnya, TokoShiSop mengadakan Rapat Kerja yang membahas bagaimana hasil penjualan dan strategi kedepannya yang akan diterapkan. Kamu sudah sangat menyiapkan sangat matang untuk raker tahun ini. Tetapi tiba-tiba, Steven, Manis, dan Clemong meminta kamu untuk mencari beberapa kesimpulan dari data penjualan “Laporan-TokoShiSop.tsv”.
@@ -175,7 +234,7 @@ Tiap tahunnya, TokoShiSop mengadakan Rapat Kerja yang membahas bagaimana hasil p
 
 #### Penyelesaian
 
-```bash 
+```bash
 LC_ALL=C awk -F"\t" '
 BEGIN{}
 {
@@ -192,16 +251,22 @@ END { printf("Transaksi terakhir dengan profit percentage terbesar yaitu %d deng
 ```
 
 #### Penjelasan
+<<<<<<< HEAD
 Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax ```$row``` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e dan menampilkan pula hasilA.txt untuk mengetahui output per subsoalnya dengan syntax tee.
+=======
+
+Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax `$row` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e.
+>>>>>>> fc4e9530977ccaaa5aae7d6ae2351404385a3f05
 
 #### Kendala
-Di soal 2a ini tidak ada yang terlalu menyulitkan saya untuk mengodingnya, namun banyak halangan yang saya temui di soal ini. yang paling lama saya selesaikan adalah perlunya LC_ALL=C di sebelum AWK. permasalahan ini sebenarnya sudah pernah saya temui di soal latihan modul 1, namun saya tidak terpikir menjumpainya lagi disini. ini disebabkan oleh VM Oracle virtual box yang saya gunakan tidak dapat membedakan '.' dan ',' jadi localnya harus di set seperti itu. selain itu hanya masalah tidak terbiasanya saya dengan syntax awk jadi sering salah syntax. 
+
+Di soal 2a ini tidak ada yang terlalu menyulitkan saya untuk mengodingnya, namun banyak halangan yang saya temui di soal ini. yang paling lama saya selesaikan adalah perlunya LC_ALL=C di sebelum AWK. permasalahan ini sebenarnya sudah pernah saya temui di soal latihan modul 1, namun saya tidak terpikir menjumpainya lagi disini. ini disebabkan oleh VM Oracle virtual box yang saya gunakan tidak dapat membedakan '.' dan ',' jadi localnya harus di set seperti itu. selain itu hanya masalah tidak terbiasanya saya dengan syntax awk jadi sering salah syntax.
 
 ### B. Clemong memiliki rencana promosi di Albuquerque menggunakan metode MLM. Oleh karena itu, Clemong membutuhkan daftar nama customer pada transaksi tahun 2017 di Albuquerque.
 
 #### Penyelesaian
 
-```bash 
+```bash
 awk -F"\t" '
 BEGIN{}
 {
@@ -220,9 +285,11 @@ END {
 ```
 
 #### Penjelasan
+
 soal ini meminta kita mengoutputkandaftar nama cutomer di alburquerque pada tahun 2017, jadi kita memanggil data dari file Laporan-TokoShiSop.tsv di row 10 yang berisi ama nama kota untuk memanggil kota alburquerque dan row 2 yang berisi order id untuk memanggil tahunnya. namun karena tahunnya diapit oleh isi dari order id yang lain, maka saya tidak menggunakan '==' melainkan menggunakan '~'. ini berguna untuk mengambil 2017nya dari seluruh data contohnya CA-2017-114412, jika kita menggunakan ==, 2017 tidak akan terdata sedangkan jika menggunakan ~, 2017nya akan diambil dari data penuhnya. lalu saya outputkan daftar nama tersebut dengan loop menggunakan batasan total yang di increment di if tadi.
 
 #### Kendala
+
 saya beberapa kali menggunakan == dan tidak keambil 2017nya, setelah mencari tahu, ternyata perlu memakai ~.
 
 ### C. TokoShiSop berfokus tiga segment customer, antara lain: Home Office, Customer, dan Corporate. Clemong ingin meningkatkan penjualan pada segmen customer yang paling sedikit. Oleh karena itu, Clemong membutuhkan segment customer dan jumlah transaksinya yang paling sedikit.
@@ -265,8 +332,8 @@ END {
 ```
 
 #### Penjelasan
-dibutuhkan output segment customer dengan penjualan paling sedikit, jadi perlu dicari penjualan tiap segmentnya. hal ini dicari dengan mengambil row ke 8 lalu mendeclare suatu counter tiap row ke 8 menyentuk tiap2 segmentnya. setelah seluruh counter tiap selesai, kita mensortnya dengan if else saja karena hanya 3 variabel yang akan di sort. setelah didapat yang paling kecil tinggal di print sesuai sub nomor e. 
 
+dibutuhkan output segment customer dengan penjualan paling sedikit, jadi perlu dicari penjualan tiap segmentnya. hal ini dicari dengan mengambil row ke 8 lalu mendeclare suatu counter tiap row ke 8 menyentuk tiap2 segmentnya. setelah seluruh counter tiap selesai, kita mensortnya dengan if else saja karena hanya 3 variabel yang akan di sort. setelah didapat yang paling kecil tinggal di print sesuai sub nomor e.
 
 ### D. TokoShiSop membagi wilayah bagian (region) penjualan menjadi empat bagian, antara lain: Central, East, South, dan West. Manis ingin mencari wilayah bagian (region) yang memiliki total keuntungan (profit) paling sedikit dan total keuntungan wilayah tersebut.
 
@@ -280,7 +347,7 @@ BEGIN{}
    else if($13~"South") {b+=$21}
    else if($13~"East") {c+=$21}
    else if($13~"Central") {d+=$21}
-   
+
 }
 
 END {
@@ -306,10 +373,11 @@ END {
 ```
 
 #### Penjelasan
+
 mirip dengan nomor 3 namun ini 4 variabel. jadi karena diperlukannya region dengan keuntungan paling sedikit, maka diperlukan data region(row 18) dan profit(row 21). profit dijumlahkan dengan counter yang ditambahkan tiap suatu region terpanggil, lalu di sort dengan if. lalu di print berdasarkan sub soal e.
 
-
 ### E. Kamu diharapkan bisa membuat sebuah script yang akan menghasilkan file “hasil.txt” yang memiliki format sebagai berikut:
+
 ```
 Transaksi terakhir dengan profit percentage terbesar yaitu *ID Transaksi* dengan persentase *Profit Percentage*%.
 
@@ -337,9 +405,6 @@ Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan 
 
 Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.362500
 ```
-
-
-
 
 ## Soal Nomor 3
 
@@ -500,7 +565,10 @@ Crontab `0 20 1/7,2/4 * * /home/fwe/Documents/SISOPS/Codes/Soal Shift Modul 1/so
 
 current_day=$(date '+%d')
 
-if [ $(($current_day % 2)) -ne 0 ]
+count_kelinci=`ls -a | grep -c "Kelinci_"`
+count_kucing=`ls -a | grep -c "Kucing_"`
+
+if [ $count_kelinci -le $count_kucing ]
 then
     # kalau tanggal genap
     folderName="Kelinci_$(date '+%d-%m-%Y')"
@@ -546,12 +614,13 @@ done
 
 #### Penjelasan
 
-Dilakukan penambahan perintah untuk melakukan pengecekan apakah tanggal saat ini ganjil atau genap, jika tanggal adalah genap maka akan mendownload gambar kelinci sedangkan bila tanggal ganjil akan mendownload gambar kucing.
+Dilakukan penambahan perintah untuk melakukan pengecekan folder mana yang lebih banyak, sehingga maka akan di download yang berlawanan sehingga dapat di download secara selang seling.
 
 ```
-current_day=$(date '+%d')
+count_kelinci=`ls -a | grep -c "Kelinci_"`
+count_kucing=`ls -a | grep -c "Kucing_"`
 
-if [ $(($current_day % 2)) -ne 0 ]
+if [ $count_kelinci -le $count_kucing ]
 then
     # kalau tanggal genap
     folderName="Kelinci_$(date '+%d-%m-%Y')"
@@ -599,7 +668,7 @@ unzip -qP "$password" "$zip_name"
 rm -rf "$zip_name"
 ```
 
-Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing_" atau "Kelinci_" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
+Jika tidak ada sebuah folder zip maka akan dilakukan ls pada direktori script dijalankan, dan akan dipilih folder yang memiliki awalan "Kucing" atau "Kelinci" yang diletakan pada file folder_koleksi.log, kemudian akan dilakukan looping kepada semuanya untuk di masukan ke dalam satu folder zip.
 
 ```
 # masukin semu folder yang ada ke log

@@ -21,14 +21,14 @@ cat temp8.txt | sort -s| uniq -c > HasilC2temp.txt
 perl -lane 'push @F, shift @F; print "@F"' HasilC2temp.txt > hasilC2.txt
 
 #Nomer D
-echo "Error count" > error_massage.csv
+echo "Error, count" > error_massage.csv
 cat hasilB.txt | sort -nr  >> error_massage_temp.csv
-perl -lane 'push @F, shift @F; print "@F"' error_massage_temp >> error_massage.csv
+sed 's/$/,/' error_massage_temp.csv > error_massage_temp_with_comma.csv
+perl -lane 'push @F, shift @F; print "@F"' error_massage_temp_with_comma.csv >> error_massage.csv
 
 #Nomer E
-echo "Username INFO ERROR" > user_statistic.csv
-join hasilC.txt hasilC2.txt > user_temp.txt
-cat user_temp.txt | sort -s >> user_statistic.csv
+echo "Username, INFO, ERROR" > user_statistic.csv
+join -a 1 -a 2 -e0 -o 0 1.2 2.2 hasilC.txt hasilC2.txt > user_temp.txt
 while IFS=" " read -a line;
 do
  for i in {0,1};
@@ -36,4 +36,4 @@ do
    line[$i]+=",";
   done
  echo "${line[@]}"
-done < user_statistic.csv
+done < user_temp.txt >> user_statistic.csv
