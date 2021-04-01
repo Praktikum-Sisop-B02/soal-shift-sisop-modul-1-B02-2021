@@ -188,11 +188,11 @@ BEGIN{}
 }}
 
 END { printf("Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan persentase %.2f%%.\n\n", Maxid, Maxpp)}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv > hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilA.txt hasil.txt
 ```
 
 #### Penjelasan
-Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax ```$row``` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e.
+Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax ```$row``` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e dan menampilkan pula hasilA.txt untuk mengetahui output per subsoalnya dengan syntax tee.
 
 #### Kendala
 Di soal 2a ini tidak ada yang terlalu menyulitkan saya untuk mengodingnya, namun banyak halangan yang saya temui di soal ini. yang paling lama saya selesaikan adalah perlunya LC_ALL=C di sebelum AWK. permasalahan ini sebenarnya sudah pernah saya temui di soal latihan modul 1, namun saya tidak terpikir menjumpainya lagi disini. ini disebabkan oleh VM Oracle virtual box yang saya gunakan tidak dapat membedakan '.' dan ',' jadi localnya harus di set seperti itu. selain itu hanya masalah tidak terbiasanya saya dengan syntax awk jadi sering salah syntax. 
@@ -216,7 +216,7 @@ END {
     for(nama in total){
     printf ("%s\n", nama);
 }}}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilB.txt hasil.txt
 ```
 
 #### Penjelasan
@@ -261,7 +261,7 @@ END {
         }
     printf("\nTipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n", minseg, minorder);
 }}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilC.txt hasil.txt
 ```
 
 #### Penjelasan
@@ -300,9 +300,9 @@ END {
        minreg="Central"
        minp=d
    }
-    printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %d",minreg,minp);
+    printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %f",minreg,minp);
 }}
-' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv >> hasil.txt
+' /home/arkan/Documents/Modul1/Laporan-TokoShiSop.tsv | tee -a hasilD.txt hasil.txt
 ```
 
 #### Penjelasan
@@ -335,7 +335,7 @@ Susan Vittorini
 
 Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan 1783 transaksi.
 
-Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706
+Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah Central dengan total keuntungan 39706.362500
 ```
 
 
