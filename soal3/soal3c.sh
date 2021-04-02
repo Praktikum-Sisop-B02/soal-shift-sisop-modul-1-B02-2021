@@ -2,7 +2,10 @@
 
 current_day=$(date '+%d')
 
-if [ $(($current_day % 2)) -ne 0 ]
+count_kelinci=`ls -a | grep -c "Kelinci_"`
+count_kucing=`ls -a | grep -c "Kucing_"`
+
+if [ $count_kelinci -le $count_kucing ]
 then
     # kalau tanggal genap
     folderName="Kelinci_$(date '+%d-%m-%Y')"
