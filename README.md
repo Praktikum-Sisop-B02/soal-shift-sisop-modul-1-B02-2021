@@ -251,12 +251,8 @@ END { printf("Transaksi terakhir dengan profit percentage terbesar yaitu %d deng
 ```
 
 #### Penjelasan
-<<<<<<< HEAD
-Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax ```$row``` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e dan menampilkan pula hasilA.txt untuk mengetahui output per subsoalnya dengan syntax tee.
-=======
 
 Di soal 2 ini kita mengimplementasikan salah satu pelajaran di modul 1 yaitu AWK. Setelah kemarin asistensi dengan mas rafi, ternyata AWK bisa dijalankan dengan bash, jadi saya coba mempraktekan AWK ini pada .sh file. soal ini ingin kita mengeluarkan output row id dan profit percentage terbesar. profit percentage bisa didapat dari rumus yang sudah disediakan pada soal. row id didapat dari row pertama pada file Laporan-TokoShiSop.tsv sedangkan profit dan sales (yang merupakan komponen dalam mencari profit percentage) didapat dari row ke 21 dan 18. jadi kita mengambil data dari file tersebut dengan menggunakan syntax `$row` . saya menggunakan if untuk menset maxpp(profit percentage terbesar) dan maxid(id terbesar). karna di soal ditulis row id diambil yang terbesar, maka saya pakai maxpp<=pp karena profit percentage terbesar ada di angka 100% dan yang punya 100% itu ada banyak, jadi saat maxpp bertemu dengan 100% lagi, dia akan mereplace si maxid tersebut. selanjutnya saya print persis seperti yang dijerlaskan oleh sub nomor e.
->>>>>>> fc4e9530977ccaaa5aae7d6ae2351404385a3f05
 
 #### Kendala
 
